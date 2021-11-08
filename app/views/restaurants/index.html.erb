@@ -1,0 +1,48 @@
+<p id="notice"><%= notice %></p>
+
+<div class="container">
+  <div class="row">
+    <div class="col-8">
+      <h1>Restaurants</h1>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>User</th>
+            <th colspan="3"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @restaurants.each do |restaurant| %>
+            <tr>
+              <td><%= restaurant.name %></td>
+              <td><%= restaurant.user.email %></td>
+              <!-- Everyone can see the details of one restaurant -->
+              <td><%= link_to 'Show', restaurant, class: 'btn btn-xs btn-primary' %></td>
+
+              <!-- Only the owner of the restaurant -->
+              <% if policy(restaurant).edit? %>
+                <td><%= link_to 'Edit', edit_restaurant_path(restaurant), class: 'btn btn-warning' %></td>
+              <% end %>
+
+              <!-- Only the owner of the restaurant can destroy -->
+              <% if policy(restaurant).destroy? %>
+                <td><%= link_to 'Destroy', restaurant, method: :delete, class: 'btn btn-danger', data: { confirm: 'Are you sure?' } %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <br>
+
+      <!-- Everyone can create a restaurant -->
+      <% if policy(Restaurant).new? %>
+        <%= link_to 'New Restaurant', new_restaurant_path, class: 'btn btn-primary' %>
+      <% end %>
+
+    </div>
+  </div>
+</div>
